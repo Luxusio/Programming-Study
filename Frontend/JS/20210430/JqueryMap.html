@@ -1,0 +1,17 @@
+<html lang="en">
+<body>
+    <ul>
+        <li>html</li>
+        <li>css</li>
+        <li>JavaScript</li>
+    </ul>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        var li = $('li');
+        li.map((index, element)=> {
+            console.log(index, element);
+            $(element).css('color', 'red');
+        });
+    </script>
+</body>
+</html>
