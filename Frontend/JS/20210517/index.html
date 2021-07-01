@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HOME NETWORK</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>HOME IoT</h2>
+        </div>
+        <div class="main">
+            <div>
+                <button class="r">R LED ON</button>
+            </div>
+            <div>
+                <button class="g">G LED ON</button>
+            </div>
+            <div>
+                <button class="b">B LED ON</button>
+            </div>
+        </div>
+        <div class="main">
+            <div>
+                <button class="a">RGB LED ON</button>
+            </div>
+            <div>
+                <button class="capture">Capture camera</button>
+            </div>
+        </div>
+	<div class="distance"></div>
+    <div class="camera"></div>
+    <div id="result"></div>
+    </div>
+    <script>
+    const $distance = document.querySelector(".distance");
+	const $dht = document.querySelector(".dht");
+    const $capture = document.querySelector(".capture");
+	const $camera = document.querySelector(".camera");
+    const $result = document.querySelector("#result");
+	const $r = document.querySelector(".r");
+	const $g = document.querySelector(".g");
+	const $b = document.querySelector(".b");
+	const $a = document.querySelector(".a");
+	
+	let statusR = false, statusG = false, statusB = false;
+    let statusA = false;
+    let showDHT = false;
+	
+	function led(status) {
+	    fetch(`/led/${status}`)
+		.then(response => { console.log(response); return response.text()})
+		.then(data=> {
+		if (data == "ok")
+            $result.innerHTML = "";
+		else
+            $result.innerHTML = "<h1>error</h1>";			
+		});
+	}
+	led("rfgfbf");
+
+    function apply(target, status, name, doNetwork=true) {
+        if (status) {
+            doNetwork && led(`${name.toLowerCase()}f`);
+            target.innerHTML = name + " LED ON";
+        }
+        else {
+            doNetwork && led(`${name.toLowerCase()}n`);
+            target.innerHTML = name + " LED OFF";
+        }
+    }
+	
+    $r.addEventListener("click", ()=> {
+        statusR = !statusR;
+        apply($r, statusR, 'R');
+    });
+    $g.addEventListener("click", ()=> {
+        statusG = !statusG;
+        apply($g, statusG, 'G');
+    });
+    $b.addEventListener("click", ()=> {
+        statusB = !statusB;
+        apply($b, statusB, 'B');
+    });
+    $a.addEventListener("click", ()=> {
+        if (statusA) {
+            led("rfgfbf");
+            $a.innerHTML = "RGB LED OFF";
+        }
+        else {
+            led("rnbngn");
+            $a.innerHTML = "RGB LED ON";
+        }
+        statusA = !statusA;
+        statusR = statusA;
+        statusG = statusA;
+        statusB = statusA;
+        apply($r, statusR, 'R', false);
+        apply($g, statusG, 'G', false);
+        apply($b, statusB, 'B', false);
+    });
+
+    $capture.addEventListener("click", async ()=> {
+        const data = await api("/cam");
+        if (data.status == "ok") {
+            $camera.innerHTML = `<img src='${data.image.substring(2)}'>`
+        }
+        else {
+            $camera.innerHTML = "NO CAMERA FOUND."
+        }
+    });
+	
+    const asyncNoop = async ()=>{};
+    const delay = async(ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const api = async url=> {
+        return fetch(url)
+            .then(response=>{
+            console.log(response);
+            return response.json();
+        });
+    };
+
+    asyncNoop().then(async ()=> {
+        while (true) {
+            await delay(1000);
+            const data = await api("/ultrasonic");
+            $distance.innerHTML = `<h2>초음파 거리:${data.distance}</h2>`;
+        }
+    });
+
+    asyncNoop().then(async ()=> {
+        while (true) {
+            await delay(2000);
+            if (showDHT) {
+                const data = await api("/dht");
+                $dht.innerHTML = `<h2>온도:${data.temperature}C 습도:${data.humidity}%</h2>`;
+            }
+        }
+    });
+    
+</script>
+</body>
+</html>

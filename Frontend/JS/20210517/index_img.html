@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HOME NETWORK</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>HOME IoT</h2>
+        </div>
+        <div class="main">
+            <div>
+                <button class="original">Original</button>
+            </div>
+            <div>
+                <button class="gray">Gray</button>
+            </div>
+            <div>
+                <button class="text">Text</button>
+            </div>
+        </div>
+        <input type="text" class="textInput">
+        <div id="result"></div>
+        <div id="error"></div>
+    </div>
+    <script>
+    const $original = document.querySelector(".original");
+	const $gray = document.querySelector(".gray");
+    const $text = document.querySelector(".text");
+	const $textInput = document.querySelector(".textInput");
+    const $result = document.querySelector("#result");
+    const $error = document.querySelector("#error");
+	
+    const api = async url=> {
+        return fetch(url)
+            .then(response=>{
+            console.log(response);
+            return response.json();
+        });
+    };
+
+    function picture(status) {
+        api(`/img/stone.jpg?${status}`)
+        .then(data=> {
+            if (data.status == "ok") {
+                $error.innerHTML = ""
+                $result.innerHTML = `<img src='${data.image.substring(2)}'>`;
+            }
+            else {
+                $error.innerHTML = `<h1>error:${data.image}</h1>`
+            }
+        })
+    }
+
+    $original.addEventListener("click", ()=> {
+        picture("state=original")
+    });
+    $gray.addEventListener("click", ()=> {
+        picture("state=gray")
+    });
+    $text.addEventListener("click", ()=> {
+        const text = $textInput.value;
+        picture(`state=text&text=${text}&x=10&y=10&fontSize=1.0`)
+    });
+    
+</script>
+</body>
+</html>

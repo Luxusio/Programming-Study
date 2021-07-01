@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>01/1</title>
+  <script src="./Fx2.js"></script>
+</head>
+<body>
+
+
+<script>
+
+  const strJoin = sep => _.reduce((a, b)=>`${a}${sep}${b}`);
+
+  function star() {
+      let a = _.go(
+          L.range(1, 6),
+          L.map(n=>_.go(
+              L.range(n),
+              L.map(_ => '*'),
+              //_.reduce((a, b)=>`${a}${b}`),
+              strJoin('')
+            )
+          ),
+          //_.reduce((a,b)=>`${a}\n${b}`),
+          strJoin('\n'),
+          console.log,
+      );
+
+  }
+  star();
+
+
+  function gugudan() {
+    _.go(
+      L.range(2, 10),
+      L.map(a=> _.go(
+        L.range(10),
+        L.map(b=>`${a}x${b}=${a*b}`),
+        _.take(2),
+        strJoin('\n'),
+      )),
+      strJoin('\n'),
+      console.log
+    );
+  };
+  gugudan();
+
+  console.clear();
+
+</script>
+
+
+<script>
+  /*
+  class Product extends Model {};
+  class Products extends Collection {
+    totalPrice() {
+      return _.go(
+        this.models,
+        L.map(p => p.get('price')),
+        L.reduce((a, b) => a + b),
+      );
+    }
+  };
+
+  const products = new Products();
+  products.add(new Product({ id: 1, price: 10000}));
+  console.log(products.totalPrice());
+  products.add(new Product({ id: 2, price: 25000}));
+  console.log(products.totalPrice());
+  products.add(new Product({ id: 3, price: 35000}));
+  console.log(products.totalPrice());
+  */
+
+</script>
+
+
+
+<script>
+
+</script>
+
+8. 추억의 별 그리기, 구구단
+
+<script>
+  //const join = sep => _.reduce((a, b) => `${a}${sep}${b}`);
+
+
+  /*_.go(
+    L.range(1, 6),
+    L.map(s => _.go(
+      L.range(s),
+      L.map(_ => '*'),
+      _.reduce((a, b) => `${a}${b}`))),
+    _.reduce((a, b) => `${a}\n${b}`),
+    console.log);*/
+</script>
+
+</body>
+</html>
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./Fx.js"></script>
+</head>
+<body>
+<script type="module">
+import { _, L, C, nop } from "./Fx";
+
+function star() {
+
+    _.go(
+        range(1, 6),
+        console.log
+    );
+    console.log('star');
+}
+
+star();
+console.log('star');
+console.log('asdfasdfasdf');
+console.log('star');
+
+
+
+
+</script>
+</body>
+</html>-->
