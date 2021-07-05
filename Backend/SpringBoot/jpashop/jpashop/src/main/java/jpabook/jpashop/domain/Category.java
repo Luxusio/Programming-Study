@@ -38,4 +38,10 @@ public class Category {
 
     protected Category() { }
 
+    // relation method
+//    public void addChildCategory(Category child) {
+//        this.child.add(child);
+//        child.setParent(this);
+//    }
+
 }
