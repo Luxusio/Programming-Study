@@ -3,13 +3,14 @@ package jpabook.jpashop.domain;
 import jpabook.jpashop.domain.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@AllArgsConstructor @Getter
+@Getter @Setter
 public class OrderItem {
 
     @Id @GeneratedValue
@@ -27,5 +28,24 @@ public class OrderItem {
     private int orderPrice; // price of order
     private int count;      // amount of ordered items
 
-    protected OrderItem() { }
+
+    // create method
+    public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(item);
+        orderItem.setOrderPrice(orderPrice);
+        orderItem.setCount(count);
+
+        item.removeStock(count);
+        return orderItem;
+    }
+
+    // business logic
+    /**
+     * cancel order in OrderItem
+     */
+    public void cancel() {
+        getItem().addStock(count);
+    }
+
 }
