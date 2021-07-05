@@ -2,13 +2,14 @@ package jpabook.jpashop.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
 @Entity
-@AllArgsConstructor @Getter
+@Getter @Setter
 public class Delivery {
 
     @Id @GeneratedValue
@@ -24,6 +25,5 @@ public class Delivery {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
-    protected Delivery() { }
 
 }

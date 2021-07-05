@@ -1,8 +1,6 @@
 package jpabook.jpashop.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
@@ -15,6 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Table(name = "orders")
 @AllArgsConstructor @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id @GeneratedValue
@@ -28,7 +27,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
@@ -36,8 +35,6 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
-    protected Order() { }
 
     // relation method
     public void setMember(Member member) {
