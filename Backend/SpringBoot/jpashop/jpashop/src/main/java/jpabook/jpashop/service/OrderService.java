@@ -42,7 +42,7 @@ public class OrderService {
         delivery.setAddress(member.getAddress());
 
         // create order item
-        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
+        OrderItem orderItem = OrderItem.createOrderItem(item, count * item.getPrice(), count);
 
         // create order
         Order order = Order.createOrder(member, delivery, orderItem);

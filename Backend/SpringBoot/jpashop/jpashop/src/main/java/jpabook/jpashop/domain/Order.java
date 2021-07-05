@@ -82,7 +82,7 @@ public class Order {
      * @return total price of current order
      */
     public int getTotalPrice() {
-        int totalPrice=  0;
+        int totalPrice = 0;
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getOrderPrice();
         }
