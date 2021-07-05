@@ -1,14 +1,14 @@
 package jpabook.jpashop.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@AllArgsConstructor @Getter
 public class Member {
 
     @Id @GeneratedValue
@@ -22,5 +22,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
+
+    protected Member() { }
 
 }

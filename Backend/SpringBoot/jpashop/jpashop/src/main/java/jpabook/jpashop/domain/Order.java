@@ -1,7 +1,7 @@
 package jpabook.jpashop.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Getter @Setter
+@AllArgsConstructor @Getter
 public class Order {
 
     @Id @GeneratedValue
@@ -32,4 +32,6 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    protected Order() { }
 }

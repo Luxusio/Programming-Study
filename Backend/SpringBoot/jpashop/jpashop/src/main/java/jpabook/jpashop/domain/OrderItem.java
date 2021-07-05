@@ -1,13 +1,13 @@
 package jpabook.jpashop.domain;
 
 import jpabook.jpashop.domain.item.Item;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@AllArgsConstructor @Getter
 public class OrderItem {
 
     @Id @GeneratedValue
@@ -24,4 +24,6 @@ public class OrderItem {
 
     private int orderPrice; // price of order
     private int count;      // amount of ordered items
+
+    protected OrderItem() { }
 }
