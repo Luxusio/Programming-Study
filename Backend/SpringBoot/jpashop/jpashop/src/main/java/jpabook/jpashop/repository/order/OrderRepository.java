@@ -54,7 +54,7 @@ public class OrderRepository {
                             orderSearch.getMemberName() + "%");
             criteria.add(name);
         }
-        cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
+        cq.where(cb.and(criteria.toArray(new Predicate[0])));
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000); // 최대 1000건
         return query.getResultList();
     }
@@ -76,5 +76,14 @@ public class OrderRepository {
                         " join fetch o.orderItems oi" +
                         " join fetch oi.item i", Order.class
         ).getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit).getResultList();
     }
 }
