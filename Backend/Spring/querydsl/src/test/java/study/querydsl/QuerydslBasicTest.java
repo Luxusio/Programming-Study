@@ -15,6 +15,8 @@ import study.querydsl.entity.QTeam;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 
 import java.util.List;
 
@@ -215,6 +217,113 @@ public class QuerydslBasicTest {
 
         assertEquals("teamB", teamB.get(team.name));
         assertEquals(35, teamB.get(member.age.avg()));
+
+    }
+
+    /**
+     * all members in teamA
+     */
+    @Test
+    public void join() {
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .leftJoin(member.team, team)
+                .where(team.name.eq("teamA"))
+                .fetch();
+
+        assertEquals("member1", result.get(0).getUsername());
+        assertEquals("member2", result.get(1).getUsername());
+
+    }
+
+    /**
+     * theta join
+     * select when member name is equal to team name
+     */
+    @Test
+    public void thetaJoin() {
+        em.persist(Member.createMember("teamA"));
+        em.persist(Member.createMember("teamB"));
+        em.persist(Member.createMember("teamC"));
+
+        List<Member> result = queryFactory
+                .select(member)
+                .from(member, team)
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        assertEquals("teamA", result.get(0).getUsername());
+        assertEquals("teamB", result.get(1).getUsername());
+    }
+
+
+    /**
+     * 회원, 팀을 join하면서 team이름이 teamA인 팀만 조인, 회원은 모두 조회
+     * JPQL: select m, t from Member m left join m.team t on t.name = 'teamA'
+     */
+    @Test
+    void joinOnFiltering() {
+        List<Tuple> result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(member.team, team).on(team.name.eq("teamA"))
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+    }
+
+    @Test
+    void joinOnNoRelation() {
+        em.persist(Member.createMember("teamA"));
+        em.persist(Member.createMember("teamB"));
+        em.persist(Member.createMember("teamC"));
+
+        List<Tuple> result = queryFactory
+                .select(member, team)
+                .from(member)
+                .leftJoin(team).on(member.username.eq(team.name))
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+    }
+
+    @PersistenceUnit
+    EntityManagerFactory emf;
+
+    @Test
+    void noFetchJoin() {
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(QMember.member)
+                .where(QMember.member.username.eq("member1"))
+                .fetchOne();
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertFalse(loaded, "No fetch join");
+
+    }
+
+
+    @Test
+    void withFetchJoin() {
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(QMember.member)
+                .join(member.team, team).fetchJoin()
+                .where(QMember.member.username.eq("member1"))
+                .fetchOne();
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertTrue(loaded, "With fetch join");
 
     }
 
