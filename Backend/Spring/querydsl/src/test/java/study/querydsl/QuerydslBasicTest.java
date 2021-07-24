@@ -1,9 +1,12 @@
 package study.querydsl;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -475,7 +478,7 @@ public class QuerydslBasicTest {
     }
     
     @Test
-    public void tupleProjection() {
+    void tupleProjection() {
         List<Tuple> result = queryFactory
                 .select(member.username, member.age)
                 .from(member)
@@ -489,7 +492,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void findDtoByJPQL() {
+    void findDtoByJPQL() {
         List<MemberDto> select_m_from_member_m =
                 em.createQuery("select new study.querydsl.dto.MemberDto(m.username, m.age) from Member m", MemberDto.class)
                 .getResultList();
@@ -499,7 +502,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void findDtoBySetter() {
+    void findDtoBySetter() {
         List<MemberDto> result = queryFactory
                 .select(Projections.bean(MemberDto.class,
                         member.username,
@@ -512,7 +515,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void findDtoByField() {
+    void findDtoByField() {
         List<MemberDto> result = queryFactory
                 .select(Projections.fields(MemberDto.class,
                         member.username,
@@ -525,7 +528,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void findDtoByConstructor() {
+    void findDtoByConstructor() {
         List<MemberDto> result = queryFactory
                 .select(Projections.constructor(MemberDto.class,
                         member.username,
@@ -539,7 +542,7 @@ public class QuerydslBasicTest {
 
 
     @Test
-    public void findUserDto() {
+    void findUserDto() {
         QMember ms = new QMember("ms");
         List<UserDto> result = queryFactory
                 .select(Projections.fields(UserDto.class,
@@ -554,7 +557,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void findDtoByQueryProjection() {
+    void findDtoByQueryProjection() {
         List<MemberDto> result = queryFactory
                 .select(new QMemberDto(member.username, member.age))
                 .from(member)
@@ -565,6 +568,59 @@ public class QuerydslBasicTest {
         }
     }
 
+    ///////////////////////////////////////////////////
+    @Test
+    void dynamicQuery() {
+        String usernameParam = "member1";
+        Integer ageParam = 10;
 
+        List<Member> result = searchMember1(usernameParam, ageParam);
+
+        assertEquals(1, result.size());
+    }
+
+    private List<Member> searchMember1(String usernameCond, Integer ageCond) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if (usernameCond != null) {
+            builder.and(member.username.eq(usernameCond));
+        }
+
+        if (ageCond != null) {
+            builder.and(member.age.eq(ageCond));
+        }
+
+        return queryFactory
+                .selectFrom(member)
+                .where(builder)
+                .fetch();
+    }
+
+    @Test
+    void dynamicQuery_WhereParam() {
+        String usernameParam = "member1";
+        Integer ageParam = 10;
+
+        List<Member> result = searchMember2(usernameParam, ageParam);
+
+        assertEquals(1, result.size());
+    }
+
+
+    private List<Member> searchMember2(String usernameCond, Integer ageCond) {
+        return queryFactory
+                .selectFrom(member)
+                .where(usernameEq(usernameCond), ageEq(ageCond))
+                .fetch();
+    }
+
+    private BooleanExpression usernameEq(String usernameCond) {
+        return usernameCond == null ? null :
+                member.username.eq(usernameCond);
+    }
+
+    private BooleanExpression ageEq(Integer ageCond) {
+        return ageCond == null ? null :
+                member.age.eq(ageCond);
+    }
 
 }

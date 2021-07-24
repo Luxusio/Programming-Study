@@ -36,7 +36,7 @@ test {
 }
 
 //querydsl 추가 시작
-String querydslDir = "src/main/generated"
+String querydslDir = "$buildDir/generated/querydsl"
 querydsl {
 	jpa = true
 	querydslSourcesDir = querydslDir
