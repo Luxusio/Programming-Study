@@ -1,6 +1,5 @@
 package hello.servlet.web.servlet;
 
-import com.sun.net.httpserver.HttpsServer;
 import hello.servlet.domain.member.Member;
 import hello.servlet.domain.member.MemberRepository;
 
