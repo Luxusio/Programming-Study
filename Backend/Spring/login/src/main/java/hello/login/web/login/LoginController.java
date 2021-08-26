@@ -47,4 +47,16 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        expireCookie(response);
+        return "redirect:/";
+    }
+
+    private void expireCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("memberId", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
+
 }
