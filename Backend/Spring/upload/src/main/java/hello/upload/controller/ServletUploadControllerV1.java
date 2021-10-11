@@ -14,7 +14,7 @@ import java.util.Collection;
 
 @Slf4j
 @Controller
-@RequestMapping("/servletv1")
+@RequestMapping("/servlet/v1")
 public class ServletUploadControllerV1 {
 
     @GetMapping("/upload")
