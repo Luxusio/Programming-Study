@@ -13,9 +13,9 @@ import static org.assertj.core.api.Assertions.*;
 class ChangesModuleTest {
 
     @Test
-    void create_changesModule() {
-        ChangesModule changesModule = new ChangesModule();
-        assertThat(changesModule).isNotNull();
+    void create_vendingMachine() {
+        VendingMachine vendingMachine = new VendingMachine();
+        assertThat(vendingMachine).isNotNull();
     }
 
     @ParameterizedTest(name = "insert {0}won then we can know {0}won in changes module ")
@@ -24,6 +24,28 @@ class ChangesModuleTest {
         ChangesModule changesModule = new ChangesModule();
         changesModule.put(changes);
         assertThat(changesModule.getChanges()).isEqualTo(changes);
+    }
+
+    @ParameterizedTest(name = "자판기에 {0}원을 넣으면 {0}원이 들어있음을 알 수 있다")
+    @ValueSource(ints = {500, 1000, 10000, 200, 111, 223})
+    void 자판기에_n원을_넣으면_n원이_들어있음을_알수있다(int changes) {
+        VendingMachine vendingMachine = new VendingMachine();
+        vendingMachine.put(changes);
+        assertThat(vendingMachine.getChanges()).isEqualTo(changes);
+    }
+
+    @Test
+    void _500원이_들어있는_자판기에_500원을_뺄시_0원이_들어있음을_알수있다() {
+        VendingMachine vendingMachine = new VendingMachine(500);
+        vendingMachine.withdraw(500);
+        assertThat(vendingMachine.getChanges()).isEqualTo(0);
+    }
+
+    @Test
+    void _500원이_들어있는_자판기에서_1000원을_뺄수_없다() {
+        ChangesModule changesModule = new ChangesModule(0);
+        assertThatIllegalStateException()
+                .isThrownBy(() -> changesModule.withdraw(500));
     }
 
     @Test
