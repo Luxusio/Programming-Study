@@ -1,8 +1,7 @@
 package hellojpa;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Member {
@@ -10,21 +9,19 @@ public class Member {
     @Id
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
-    public Long getId() {
-        return id;
-    }
+    @Enumerated(value = EnumType.STRING)
+    private RoleType roleType;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 
-    public String getName() {
-        return name;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Lob
+    private String description;
+
 }
