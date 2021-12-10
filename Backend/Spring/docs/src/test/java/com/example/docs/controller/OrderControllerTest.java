@@ -89,7 +89,7 @@ class OrderControllerTest {
 
         // then
         perform.andExpect(status().isOk())
-                .andDo(document("order",
+                .andDo(document("orders-get",
                         requestParameters(
                                 parameterWithName("offset").description("Paging offset (0 < offset)"),
                                 parameterWithName("limit").description("Paging limit (0 < limit)"),
@@ -132,14 +132,7 @@ class OrderControllerTest {
 
         // then
         perform.andExpect(status().is4xxClientError())
-                .andDo(document("order",
-                        requestParameters(
-                                parameterWithName("offset").description("Paging offset (0 < offset)"),
-                                parameterWithName("limit").description("Paging limit (0 < limit)"),
-                                parameterWithName("customerKey").optional().description("Customer key, multiple allowed"),
-                                parameterWithName("productKey").optional().description("Product key, multiple allowed"),
-                                parameterWithName("minTotalPrice").optional().description("min total price"),
-                                parameterWithName("maxTotalPrice").optional().description("max total price")),
+                .andDo(document("common-ex",
                         responseFields(
                                 fieldWithPath("errorMessage").type(JsonFieldType.STRING).description("error message")
                         )));

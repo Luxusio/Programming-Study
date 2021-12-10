@@ -1,0 +1,58 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+= API Document
+:doctype:
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+[[introduction]]
+== 소개
+
+주문 API
+
+[[common]]
+== 공통 사항
+
+API에 관계없이 아래 사항을 지켜주셔야 합니다.
+
+=== Domain
+
+|===
+| 환경 | Domain
+
+| 서버
+| `http://localhost:8080`
+
+|===
+
+=== Common Exception
+
+include::{snippets}/common-ex/response-fields.adoc[]
+
+include::{snippets}/common-ex/response-body.adoc[]
+
+&#160;
+
+== 주문 API
+
+[[orders-V1]]
+=== V1
+
+==== Request
+include::{snippets}/orders-get/request-parameters.adoc[]
+
+===== Request HTTP Example
+include::{snippets}/orders-get/http-request.adoc[]
+
+==== Response
+include::{snippets}/orders-get/response-fields.adoc[]
+
+===== Response HTTP Example
+include::{snippets}/orders-get/http-response.adoc[]
+
+&#160;

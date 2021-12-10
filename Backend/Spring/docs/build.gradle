@@ -37,29 +37,29 @@ test {
 }
 
 asciidoctor {
-	sourceDir snippetsDir
-	outputDir "build/asciidoc/html5"
+	inputs.dir snippetsDir
 	dependsOn test
 }
 
 asciidoctor.doFirst {
 	// 기존에 생성된 문서 삭제
-	delete file('src/main/resources/static/docs')
+	delete file('src/main/resources/static/docs/')
 }
 
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor
-	from file("build/asciidoc/html5")
+	from file("${asciidoctor.outputDir}")
 	into file("src/main/resources/static/docs")
 }
 
 build {
-	dependsOn copyDocument
+	dependsOn copyDocument // 빌드 속도가 느릴 시 제거 (제거 시 필요시에만 copyDocument task 수동으로 수행 필요)
 }
 
 bootJar {
 	dependsOn asciidoctor
-	from ("${asciidoctor.outputDir}/html5") {
+	from ("${asciidoctor.outputDir}") {
 		into 'BOOT-INF/classes/static/docs'
+		duplicatesStrategy DuplicatesStrategy.EXCLUDE
 	}
 }
