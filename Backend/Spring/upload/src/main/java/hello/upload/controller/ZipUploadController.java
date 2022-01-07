@@ -16,7 +16,7 @@ import java.net.MalformedURLException;
 @RestController
 @RequestMapping("/file/v1")
 @RequiredArgsConstructor
-public class UploadController {
+public class ZipUploadController {
 
     public final FileStore fileStore;
 
