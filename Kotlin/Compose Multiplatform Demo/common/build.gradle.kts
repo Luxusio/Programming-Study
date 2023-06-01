@@ -1,13 +1,20 @@
-import org.jetbrains.compose.compose
-
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("app.cash.sqldelight") version "2.0.0-alpha05"
 }
 
 group = "com.example"
 version = "1.0-SNAPSHOT"
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.example")
+        }
+    }
+}
 
 kotlin {
     android()
@@ -31,6 +38,7 @@ kotlin {
             dependencies {
                 api("androidx.appcompat:appcompat:1.5.1")
                 api("androidx.core:core-ktx:1.9.0")
+                implementation("app.cash.sqldelight:android-driver:2.0.0-alpha05")
             }
         }
         val androidTest by getting {
@@ -41,6 +49,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
+                implementation("app.cash.sqldelight:native-driver:2.0.0-alpha05")
             }
         }
         val desktopTest by getting
