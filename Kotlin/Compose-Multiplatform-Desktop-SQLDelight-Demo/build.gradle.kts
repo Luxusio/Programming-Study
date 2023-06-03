@@ -29,10 +29,7 @@ kotlin {
         withJava()
     }
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-            }
-        }
+        val commonMain by getting
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
