@@ -1,0 +1,14 @@
+app:
+  jwt.secret: <your secret>
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: <your id>
+            client-secret: your secret>
+            scope:
+              - profile
+              - email
