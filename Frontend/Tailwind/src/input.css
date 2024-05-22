@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.grid-i {
+    @apply border-4 border-blue-500;
+}
+
+body {
+    background-color: lightblue;
+}

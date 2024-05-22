@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tailwindcss</title>
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jun: '#da373d',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .wa-sans {
+                @apply h-32 w-32 bg-jun
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="grid grid-cols-1 gap-2 border-4 border-red-400 sm:grid-cols-3 md:grid-cols-4">
+    <div class="border-4 border-jun">hello</div>
+    <div class="border-4 border-jun">hello</div>
+    <div class="border-4 border-jun">hello</div>
+    <div class="border-4 border-jun">hello</div>
+    <div class="border-4 border-jun">hello</div>
+    <div class="border-4 border-jun">hello</div>
+</div>
+
+<div class="grid grid-cols-1 gap-2 border-4 border-red-400 sm:grid-cols-3 md:grid-cols-4">
+    <div class="wa-sans">hello</div>
+    <div class="wa-sans">hello</div>
+    <div class="wa-sans">hello</div>
+    <div class="wa-sans">hello</div>
+    <div class="wa-sans">hello</div>
+    <div class="wa-sans">hello</div>
+</div>
+
+<article class="prose md:prose-md lg:prose-lg xl:prose-xl mt-4">
+    <h1>Garlic bread with cheese: What the science tells us</h1>
+    <p>
+        For years parents have espoused the health benefits of eating garlic bread with cheese to their
+        children, with the food earning such an iconic status in our culture that kids will often dress
+        up as warm, cheesy loaf for Halloween.
+    </p>
+    <p>
+        But a recent study shows that the celebrated appetizer may be linked to a series of rabies cases
+        springing up around the country.
+    </p>
+    <!-- ... -->
+</article>
+</body>
+</html>
